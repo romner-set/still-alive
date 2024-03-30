@@ -61,18 +61,18 @@ fn main() -> io::Result<()> {
         terminal.draw(|f| {
             let horizontal = Layout::new(
                 Direction::Horizontal,
-                [Constraint::Length(50), Constraint::Length(51)],
+                [Constraint::Min(0), Constraint::Length(50), Constraint::Length(51), Constraint::Min(0)],
             ).split(f.size());
 
             let left = Layout::new(
                 Direction::Vertical,
                 [Constraint::Length(36)],
-            ).split(horizontal[0]);
+            ).split(horizontal[1]);
 
             let right = Layout::new(
                 Direction::Vertical,
                 [Constraint::Length(18), Constraint::Length(20)],
-            ).split(horizontal[1]);
+            ).split(horizontal[2]);
 
             // LEFT
             f.render_widget(
