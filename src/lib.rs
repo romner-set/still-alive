@@ -6,7 +6,8 @@ pub mod data;
 pub enum Event {
     StartMusic,
     ClearScreen,
-    Draw(&'static str), // ref to definition in crate::data::ascii::*
+    Draw(&'static str), // ref to definition in data::ascii::*
+    Exit,
 }
 
 pub struct Line {

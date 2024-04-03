@@ -71,7 +71,7 @@ pub const TEXT: &'static [Line] = &[
   Line::new("still alive.\n",                            156000,    158000),
 
   Line::event("",                                        159000,    159000,  Event::ClearScreen),
-  Line::new("\n\n\n",                                    159000,    159000),//                                .no_echo = 1),
+  Line::new("\n\n\n",                                    159000,    159000),
   Line::new("PS: And believe me I am\n",                 159000,    160000),
   Line::new("still alive.\n",                            160000,    161000),
   Line::new("PPS: I'm doing Science and I'm\n",          162500,    164000),
@@ -85,10 +85,6 @@ pub const TEXT: &'static [Line] = &[
   Line::new("And when you're dead I will be\n",          174000,    176500),
   Line::new("still alive.\n\n\n",                        176500,    178000),
   Line::new("STILL ALIVE\n",                             178000,    179000),
-  Line::event("",                                        180000,    185000,  Event::ClearScreen),
-
-  Line::event("\n\n\n\n\n\n\n\n\n\n\n\n\n\n    ",        185000,    185000,  Event::ClearScreen),//    .no_echo = 1),
-  Line::event("Portal is an amazing game!!!",            185000,    187000,  Event::Draw(HEART)),//      .no_echo = 1)),
-
-  Line::new("",                                          187000,    190000),
+  Line::event("",                                        180000,    183000,  Event::ClearScreen),
+  Line::event("",                                        183000,    183000,  Event::Exit),
 ];

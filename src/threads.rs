@@ -7,6 +7,8 @@ use std::fs::File;
 use std::io::BufReader;
 use rodio::{Decoder, OutputStream, source::Source};
 
+use crossterm::ExecutableCommand;
+
 // Cursor blinking
 pub fn cursor(cursor_visible: Arc<AtomicBool>) {
     thread::spawn(move || loop {
@@ -51,6 +53,11 @@ pub fn main(left_text: Arc<Mutex<String>>, right_text: Arc<Mutex<String>>, ascii
                 },
                 Some(Event::ClearScreen) => left_text.lock().unwrap().clear(),
                 Some(Event::Draw(art)) => *ascii.lock().unwrap() = String::from(*art),
+                Some(Event::Exit) => {
+                    crate::disable_raw_mode().unwrap();
+                    crate::stdout().execute(crate::LeaveAlternateScreen).unwrap();
+                    std::process::exit(0)
+                },
                 None => ()
             }
 
