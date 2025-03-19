@@ -34,9 +34,9 @@ const BORDER_SET_R: border::Set = border::Set {
     horizontal_bottom: "-",
 };
 
-const COLOR: Color = if cfg!(target_os = "linux") {Color::Rgb(200, 162, 45)}
-                     else {Color::Yellow}; // Others may not support 24-bit color and are less
-                                           // likely to have non-standard yellow
+// Non-linux terminals may not support 24-bit color and are less likely to have non-standard colors
+const COLOR_BG: Color = if cfg!(target_os = "linux") {Color::Rgb(0, 0, 0)} else {Color::Black};
+const COLOR_FG: Color = if cfg!(target_os = "linux") {Color::Rgb(200, 162, 45)} else {Color::Yellow};
 
 // Main
 fn main() -> io::Result<()> {
@@ -59,6 +59,10 @@ fn main() -> io::Result<()> {
     let mut should_quit = false;
     while !should_quit {
         terminal.draw(|f| {
+            // BACKGROUND COLOR
+            f.render_widget(Block::default().borders(Borders::NONE).style(Style::new().bg(COLOR_BG)), f.size());
+
+            // LAYOUT
             let horizontal = Layout::new(
                 Direction::Horizontal,
                 [Constraint::Min(0), Constraint::Length(50), Constraint::Length(51), Constraint::Min(0)],
@@ -81,7 +85,7 @@ fn main() -> io::Result<()> {
                     if left_cursor_visible.load(Ordering::Relaxed) {text.push('_')};
                     Paragraph::new(text)
                         .block(Block::default().borders(Borders::ALL).border_set(BORDER_SET_L))
-                        .style(Style::new().fg(COLOR))
+                        .style(Style::new().fg(COLOR_FG))
                 },
                 left[0],
             );
@@ -98,12 +102,12 @@ fn main() -> io::Result<()> {
                     Paragraph::new(text)
                         .block(Block::default().borders(Borders::ALL).border_set(BORDER_SET_R))
                         .scroll((if line_count > 15 {line_count as u16-15} else {0}, 0))
-                        .style(Style::new().fg(COLOR))
+                        .style(Style::new().fg(COLOR_FG))
                 },
                 right[0],
             );
             f.render_widget(
-                Paragraph::new((*ascii.lock().unwrap()).clone()).style(Style::new().fg(COLOR)),
+                Paragraph::new((*ascii.lock().unwrap()).clone()).style(Style::new().fg(COLOR_FG)),
                 right[1],
             );
         })?;
