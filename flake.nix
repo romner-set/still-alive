@@ -24,15 +24,18 @@
             name = "still-alive";
             src = self;
 
-            nativeBuildInputs = with pkgs; [ pkg-config makeWrapper ];
-            buildInputs = with pkgs; [ alsa-lib.dev ];
-
-            postFixup = ''
-              mv $out/bin/still-alive $out/bin/.still-alive-wrapped
-              echo "#! ${pkgs.bash}/bin/bash" > $out/bin/still-alive
-              echo "exec ${pkgs.kitty}/bin/kitty -c /dev/null $out/bin/.still-alive-wrapped & disown" >> $out/bin/still-alive
-              chmod +x $out/bin/still-alive
-            '';
+            nativeBuildInputs = with pkgs; [
+              autoPatchelfHook
+              pkg-config
+              makeWrapper
+            ];
+            buildInputs = with pkgs; [
+              stdenv.cc.cc.lib
+              glibc.dev
+              alsa-lib.dev
+              xorg.libX11.dev
+              xorg.libXcursor.dev
+            ];
 
             cargoLock = { lockFile = ./Cargo.lock; };
             LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
